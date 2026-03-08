@@ -77,3 +77,4 @@ Thumbs.db
 # ============================================================
 *.log
 output.json
+backend/model/legalbert_clause_perspective_model/model.safetensors
