@@ -1,8 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
-  LayoutDashboard, 
-  FileText, 
-  Brain, 
+  LayoutDashboard,
+  Brain,
   GitBranch, 
   Shield, 
   FolderOpen, 
@@ -34,7 +33,6 @@ const navItems = [
   {
     section: 'PROCESSING',
     items: [
-      { path: '/dashboard/analyzer', icon: FileText, label: 'Document Analyzer' },
       { path: '/dashboard/deed-summarizer', icon: ScrollText, label: 'Deed Summarizer' },
       { path: '/dashboard/reasoning', icon: Brain, label: 'Legal Reasoning' },
       { path: '/dashboard/knowledge-graph', icon: GitBranch, label: 'Knowledge Graph' },

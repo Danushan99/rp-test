@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 const faqs = [
   {
     question: 'How do I upload a document for analysis?',
-    answer: 'Navigate to the Document Analyzer tab and either drag & drop your file or click to browse. We support PDF, DOCX, and image formats up to 25MB.',
+    answer: 'Navigate to the Deed Summarizer tab and either drag & drop your file or click to browse. We support PDF, DOCX, and image formats up to 25MB.',
   },
   {
     question: 'What types of legal documents can be analyzed?',
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     question: 'Can I export my analysis results?',
-    answer: 'Yes! You can export results as PDF reports or JSON files from the Export tab in the Document Analyzer.',
+    answer: 'Yes! You can export results as PDF reports or JSON files from the Export tab in the Deed Summarizer.',
   },
 ];
 

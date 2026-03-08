@@ -10,7 +10,6 @@ import Index from "@/pages/Index";
 import Login from "@/pages/Login";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import DashboardHome from "@/pages/dashboard/DashboardHome";
-import DocumentAnalyzer from "@/pages/dashboard/DocumentAnalyzer";
 import LegalReasoning from "@/pages/dashboard/LegalReasoning";
 import KnowledgeGraph from "@/pages/dashboard/KnowledgeGraph";
 import RiskDetection from "@/pages/dashboard/RiskDetection";
@@ -38,7 +37,6 @@ const App = () => (
             {/* Dashboard Routes */}
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<DashboardHome />} />
-              <Route path="analyzer" element={<DocumentAnalyzer />} />
               <Route path="reasoning" element={<LegalReasoning />} />
               <Route path="knowledge-graph" element={<KnowledgeGraph />} />
               <Route path="risk-detection" element={<RiskDetection />} />
