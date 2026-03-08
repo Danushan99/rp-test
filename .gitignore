@@ -1,0 +1,79 @@
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ============================================================
+# Virtual environments
+# ============================================================
+.venv/
+.venv313/
+venv/
+env/
+ENV/
+
+# ============================================================
+# Environment / secrets
+# ============================================================
+.env
+.env.*
+!.env.example
+
+# ============================================================
+# ML models & large binary artifacts
+# ============================================================
+*.bin
+*.pt
+*.pth
+*.safetensors
+*.onnx
+*.pkl
+*.pickle
+
+# HuggingFace cached downloads
+backend/model/saved_summarizer_model/
+
+# ============================================================
+# Node / Frontend
+# ============================================================
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ============================================================
+# OS / Editor
+# ============================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.sw?
+
+# ============================================================
+# Misc
+# ============================================================
+*.log
+output.json

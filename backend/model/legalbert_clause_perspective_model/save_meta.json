@@ -1,0 +1,8 @@
+{
+  "saved_at": "2026-02-10 05:04:31",
+  "base_model": "nsi319/legal-led-base-16384",
+  "max_source_len": 4096,
+  "max_target_len": 256,
+  "num_epochs": 3,
+  "notes": "Fine-tuned multi-perspective legal document summarization model."
+}
