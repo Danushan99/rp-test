@@ -1,53 +1,75 @@
-# Research Project PP2 — Setup & Run Guide
+# Research Project PP2 — How to Run
 
-## Project Structure
+This project has three components that must be started separately:
 
-```
-Research-Project-PP2-main/
-├── backend/
-│   ├── legal_deed_summarizer_flask/   # Flask API (deed summarization)
-│   └── legal_vision_api-main/         # FastAPI (GraphRAG / LegalVision)
-├── frontend/                           # React + Vite frontend
-├── start.sh                            # macOS/Linux launcher
-├── start.bat                           # Windows (CMD) launcher
-└── start.ps1                           # Windows (PowerShell) launcher
-```
+| Component | Tech | Port |
+|---|---|---|
+| Frontend | React + Vite | `5173` |
+| Deed Summarizer API | Flask | `5000` |
+| LegalVision API | FastAPI | `8000` |
 
 ---
 
 ## Prerequisites
 
-Make sure the following are installed before running:
-
-| Tool | Version | Notes |
-|------|---------|-------|
-| Python | 3.11 – 3.13 | ⚠️ Python 3.14 is **not supported** (spacy incompatibility) |
-| Node.js | 18+ | For the frontend |
-| npm | 9+ | Comes with Node.js |
-| Neo4j | 5+ | Required by LegalVision API |
+- **Node.js** (v18+) and **npm**
+- **Python** (3.10+)
+- **Neo4j** database running locally (for LegalVision API)
+- A **Gemini API key** (for Deed Summarizer)
+- An **OpenAI API key** (for LegalVision API)
 
 ---
 
-## 1. Environment Variables
+## 1. Frontend
 
-### Flask Backend (`backend/legal_deed_summarizer_flask/.env`)
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-Create a `.env` file in `backend/legal_deed_summarizer_flask/`:
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## 2. Deed Summarizer API (Flask)
+
+### Setup environment variables
+
+The `.env` file already exists at `backend/legal_deed_summarizer_flask/.env`. Verify it has your Gemini key:
 
 ```env
-GEMINI_API_KEY=your_gemini_api_key
+GEMINI_API_KEY=your_gemini_api_key_here
 GEMINI_MODEL=models/gemini-2.5-flash
 ```
 
-### LegalVision API (`backend/legal_vision_api-main/.env`)
-
-Copy the example and fill in your values:
+### Install dependencies and run
 
 ```bash
-cp backend/legal_vision_api-main/.env.example backend/legal_vision_api-main/.env
+cd backend/legal_deed_summarizer_flask
+python -m venv venv
+source venv/bin/activate        # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+python app.py
 ```
 
-Then edit `backend/legal_vision_api-main/.env`:
+The Flask API will be available at [http://localhost:5000](http://localhost:5000).
+
+---
+
+## 3. LegalVision API (FastAPI)
+
+### Setup environment variables
+
+Copy the example env file and fill in your values:
+
+```bash
+cd backend/legal_vision_api-main
+cp .env.example .env
+```
+
+Edit `.env`:
 
 ```env
 NEO4J_URI=bolt://localhost:7687
@@ -55,108 +77,38 @@ NEO4J_USER=neo4j
 NEO4J_PASS=your_neo4j_password
 
 OPENAI_API_KEY=sk-your-openai-api-key
-
-HOST=0.0.0.0
-PORT=8000
-DEBUG=true
 ```
 
----
+### Start Neo4j
 
-## 2. First-Time Setup
-
-### Flask Backend
+Make sure your Neo4j database is running before starting the API. You can use [Neo4j Desktop](https://neo4j.com/download/) or Docker:
 
 ```bash
-cd backend/legal_deed_summarizer_flask
-python3 -m venv venv
-source venv/bin/activate          # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-deactivate
+docker run -p 7474:7474 -p 7687:7687 \
+  -e NEO4J_AUTH=neo4j/your_neo4j_password \
+  neo4j:latest
 ```
 
-### LegalVision API
+### Install dependencies and run
 
 ```bash
 cd backend/legal_vision_api-main
-python3 -m venv venv
-source venv/bin/activate          # Windows: venv\Scripts\activate
+python -m venv venv
+source venv/bin/activate        # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
-deactivate
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Frontend
-
-```bash
-cd frontend
-npm install
-```
+The FastAPI docs will be available at [http://localhost:8000/docs](http://localhost:8000/docs).
 
 ---
 
-## 3. Running the Project
+## Running All Three Together
 
-### macOS / Linux
+Open three separate terminal windows and run each component in its own terminal following the steps above.
 
-```bash
-chmod +x start.sh
-./start.sh
 ```
-
-### Windows (Command Prompt)
-
-```cmd
-start.bat
+Terminal 1 → frontend         → npm run dev
+Terminal 2 → deed summarizer  → python app.py
+Terminal 3 → legalvision api  → uvicorn main:app --reload
 ```
-
-### Windows (PowerShell)
-
-> First time only — allow scripts to run:
-> ```powershell
-> Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-> ```
-
-```powershell
-.\start.ps1
-```
-
----
-
-## What the launcher does
-
-| Terminal | Service | URL |
-|----------|---------|-----|
-| New window | Flask Backend | `http://localhost:5000` |
-| New window | LegalVision API (FastAPI) | `http://localhost:8000` |
-| Current window | React Frontend (Vite) | `http://localhost:5173` |
-
-Press `Ctrl+C` in the frontend terminal to stop. Close the other terminal windows to stop the backends.
-
----
-
-## Troubleshooting
-
-**`zsh: command not found: python`**
-Use `python3` instead. The start scripts already handle this.
-
-**`spacy` fails on Python 3.14**
-Python 3.14 is not yet supported by spacy. Use Python 3.11, 3.12, or 3.13.
-```bash
-# Install Python 3.13 via Homebrew (macOS)
-brew install python@3.13
-/opt/homebrew/bin/python3.13 -m venv venv
-```
-
-**PowerShell execution policy error**
-```powershell
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-```
-
-**Frontend `node_modules` missing**
-The launcher installs them automatically. Or run manually:
-```bash
-cd frontend && npm install
-```
-
-**Neo4j connection error**
-Make sure Neo4j is running and the credentials in `backend/legal_vision_api-main/.env` are correct.
